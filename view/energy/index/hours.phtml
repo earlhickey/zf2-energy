@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Highcharts Example</title>
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript">
+		$(function () {
+            $('#power_hours').highcharts({
+                chart: {
+                    type: 'line'
+                },
+                plotOptions: {
+                    series: {
+                        enableMouseTracking: false,
+                        lineWidth: 1,
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                },
+                title: {
+                    text: 'Energy usage by hour',
+                    x: -20 //center
+                },
+                subtitle: {
+                    text: '<?php echo $this->dateTime->format('Y-m-d'); ?>',
+                    x: -20
+                },
+                xAxis: {
+                    type: 'datetime',
+                    //categories: ['1.00','2.00','3.00','4.00','5.00','6.00','7.00','8.00','9.00','10.00','11.00','12.00','13.00','14.00','15.00','16.00','17.00','18.00','19.00','20.00','21.00','22.00','23.00'],
+                    //tickInterval: 1,
+                    labels: {
+                        enabled: true
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Energy (kW)'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [{
+                    name: 'Power Usage',
+                    data: [<?php echo $this->powerUsage; ?>]
+                }, {
+                    name: 'Power Return',
+                    data: [<?php echo $this->powerReturn; ?>]
+                }]
+            });
+        });
+		</script>
+</head>
+<body>
+    <script src="/module_energy/highchart401/js/highcharts.js"></script>
+    <script src="/module_energy/highchart401/js/modules/exporting.js"></script>
+
+    <div id="power_hours" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+</body>
+</html>

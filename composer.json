@@ -1,0 +1,22 @@
+{
+  "name" : "earlhickey/zf2-energy",
+  "description" : "ZF2 module for energy stats",
+  "require" : {
+    "php" : ">=5.3.3",
+    "zendframework/zendframework" : "2.3.*"
+  },
+  "authors" : [ {
+    "name" : "Patrick Groot",
+    "email" : "pgroot@gmail.com",
+    "homepage" : "http://pg13.nl/"
+  } ],
+  "keywords" : [ "zf2" ],
+  "autoload" : {
+    "psr-0" : {
+      "Selligent" : "src/"
+    },
+    "classmap" : [ "./Module.php" ]
+  },
+  "type" : "library",
+  "homepage" : "https://github.com/earlhickey/zf2-energy"
+}
