@@ -14,15 +14,6 @@ use Zend\Db\TableGateway\TableGateway;
 
 class Module
 {
-    // Override default layout for this module
-    public function init(ModuleManager $moduleManager)
-    {
-        $sharedEvents = $moduleManager->getEventManager()->getSharedManager();
-        $sharedEvents->attach('Energy', 'dispatch', function($e) {
-            $controller = $e->getTarget();
-            $controller->layout('layout/energy');
-        }, 100);
-    }
 
     public function onBootstrap(MvcEvent $e)
     {

@@ -8,7 +8,7 @@ return array(
     ),
 	'router' => array(
         'routes' => array(
-            'Energy' => array(
+            'energy' => array(
                 'type'    => 'Segment',
                 'options' => array(
                     // Change this to something specific to your module
