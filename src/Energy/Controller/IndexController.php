@@ -72,7 +72,7 @@ class IndexController extends AbstractActionController
     public function hoursAction()
     {
         $dateTime = new \DateTime();
-        $dateTime->setDate(2014, 06, 06);
+        //$dateTime->setDate(2014, 06, 06);
 
         $records = $this->getEnergyTable()->fetchByDay($dateTime);
         $records = $records->toArray();
