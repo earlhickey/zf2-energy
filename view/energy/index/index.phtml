@@ -1,12 +1,20 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Highcharts Example</title>
 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		<script type="text/javascript">
-		$(function () {
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script src="/module_energy/highchart401/js/highcharts.js"></script>
+        <script src="/module_energy/highchart401/js/themes/dark-unica.js"></script>
+        <script type="text/javascript">
+        <!-- Generic Highcharts Config -->
+        $(function() {
+            Highcharts.setOptions({
+                exporting: {
+                    enabled: false
+                },
+                credits: {
+                    enabled: false
+                }
+            });
+        });
+        $(function () {
             $('#power').highcharts({
                 chart: {
                     type: 'line'
@@ -21,12 +29,10 @@
                     }
                 },
                 title: {
-                    text: 'Daily energy usage',
-                    x: -20 //center
+                    text: 'Daily energy usage'
                 },
                 subtitle: {
-                    text: 'pG stats',
-                    x: -20
+                    text: 'pG stats'
                 },
                 xAxis: {
                     categories: ['0','1','2','3','23'],
@@ -45,12 +51,6 @@
                         color: '#808080'
                     }]
                 },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle',
-                    borderWidth: 0
-                },
                 series: [{
                     name: 'Power Usage',
                     data: [<?php echo $this->powerUsage; ?>]
@@ -68,60 +68,44 @@
                 },
                 plotOptions: {
                     column: {
-                        stacking: 'normal',
-                        dataLabels: {
-                            enabled: false,
-                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
-                            style: {
-                                textShadow: '0 0 2px black, 0 0 2px black'
-                            }
-                        }
+                        stacking: 'normal'
                     },
                     series: {
                         pointPadding: 0.1,
                         groupPadding: 0,
-                        borderWidth: 0, 
+                        borderWidth: 0,
                         shadow: false
                     },
                 },
+                tooltip: {
+                    headerFormat: '<span>{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color}">{series.name}: </td>' +
+                    '<td><b>{point.y:.1f} KWh</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
                 title: {
-                    text: 'Daily energy usage',
-                    x: -20 //center
+                    text: 'Daily energy usage'
                 },
                 subtitle: {
-                    text: 'last 30 days',
-                    x: -20
+                    text: 'last 30 days'
                 },
                 xAxis: {
                     type: 'category',
                     labels: {
-                        rotation: -45,
-                        style: {
-                            fontSize: '11px',
-                            fontFamily: 'Verdana, sans-serif'
-                        }
+                        rotation: -45
                     }
                 },
                 yAxis: {
                     title: {
                         text: 'Energy (KWh)'
-                    },
-                    plotLines: [{
-                        value: 0,
-                        width: 1,
-                        color: '#808080'
-                    }]
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle',
-                    borderWidth: 0
+                    }
                 },
                 series: [{
                     name: 'Power Usage Total',
                     data: [<?php echo $this->powerUsageTotal; ?>],
-                    color: '#FF0000'
+                    color: 'red'
                 }, {
                     name: 'Power Return Total',
                     data: [<?php echo $this->powerReturnTotal; ?>],
@@ -139,30 +123,20 @@
                     column: {
                         stacking: 'normal',
                         dataLabels: {
-                            enabled: false,
-                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
-                            style: {
-                                textShadow: '0 0 2px black, 0 0 2px black'
-                            }
+                            enabled: false
                         }
                     }
                 },
                 title: {
-                    text: 'Daily gas usage',
-                    x: -20 //center
+                    text: 'Daily gas usage'
                 },
                 subtitle: {
-                    text: 'last 30 days',
-                    x: -20
+                    text: 'last 30 days'
                 },
                 xAxis: {
                     type: 'category',
                     labels: {
-                        rotation: -45,
-                        style: {
-                            fontSize: '11px',
-                            fontFamily: 'Verdana, sans-serif'
-                        }
+                        rotation: -45
                     }
                 },
                 yAxis: {
@@ -171,15 +145,8 @@
                     },
                     plotLines: [{
                         value: 0,
-                        width: 1,
-                        color: '#808080'
+                        width: 1
                     }]
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle',
-                    borderWidth: 0
                 },
                 series: [{
                     name: 'Gas Usage Total',
@@ -187,15 +154,15 @@
                 }]
             });
         });
-		</script>
-</head>
-<body>
-    <script src="/module_energy/highchart401/js/highcharts.js"></script>
-    <script src="/module_energy/highchart401/js/modules/exporting.js"></script>
+        </script>
 
-    <div id="power" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-    <div id="daily_power" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-    <div id="daily_gas" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-</body>
-</html>
+        <div class="row">
+            <div class="col-md-12" id="power" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="daily_power" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="daily_gas" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
+        </div>
