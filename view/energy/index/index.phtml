@@ -63,9 +63,6 @@ $(function () {
 
 $(function () {
     $('#daily_power').highcharts({
-        chart: {
-            type: 'column'
-        },
         plotOptions: {
             column: {
                 stacking: 'normal'
@@ -103,13 +100,24 @@ $(function () {
             }
         },
         series: [{
+            type: 'column',
             name: 'Power Usage Total',
             data: [<?php echo $this->powerUsageTotal; ?>],
             color: 'red'
         }, {
+            type: 'column',
             name: 'Power Return Total',
             data: [<?php echo $this->powerReturnTotal; ?>],
             color: 'green'
+        }, {
+            type: 'spline',
+            name: 'Average',
+            data: [<?php echo $this->powerAverage; ?>],
+            marker: {
+                lineWidth: 1,
+                lineColor: Highcharts.getOptions().colors[3],
+                fillColor: 'white'
+            }
         }]
     });
 });

@@ -34,9 +34,9 @@ class IndexController extends AbstractActionController
         }
 
         // get daily indervals
-        $min = new \DateInterval('P30D'); 
+        $min = new \DateInterval('P30D');
         $min->invert = 1; //Make it negative.
-        $max = new \DateInterval('P1D'); 
+        $max = new \DateInterval('P1D');
         $max->invert = 1; //Make it negative.
         $minDate = new \DateTime();
         $minDate->add($min);
@@ -48,10 +48,19 @@ class IndexController extends AbstractActionController
         // create arrays
         $powerUsageTotal = array();
         $powerReturnTotal = array();
+        $powerAverage = array();
         $gasTotal = array();
         foreach ($days as $day) {
-            $powerUsageTotal[] = "['" . $day->date . "'," . round($day->power_usage_low + $day->power_usage_hi, 2) . "]";
-            $powerReturnTotal[] = -1 * round($day->power_return_low + $day->power_return_hi, 2);
+            // Usage
+            $powerUsageCombined = $day->power_usage_low + $day->power_usage_hi;
+
+            // Return should be a negative value
+            $powerReturnCombined = -1 * ($day->power_return_low + $day->power_return_hi);
+
+            // fill array with totals
+            $powerUsageTotal[] = "['" . $day->date . "'," . round($powerUsageCombined, 2) . "]";
+            $powerReturnTotal[] = round($powerReturnCombined, 2);
+            $powerAverage[] = round($powerUsageCombined + $powerReturnCombined, 2);
             $gasTotal[] = "['" . $day->date . "'," .round($day->gas_usage, 2) . "]";
         }
 
@@ -61,6 +70,7 @@ class IndexController extends AbstractActionController
             'powerReturn' => implode(',', $powerReturn),
             'powerUsageTotal' => implode(',', $powerUsageTotal),
             'powerReturnTotal' => implode(',', $powerReturnTotal),
+            'powerAverage' => implode(',', $powerAverage),
             'gasTotal' => implode(',', $gasTotal),
         );
     }
@@ -155,7 +165,7 @@ class IndexController extends AbstractActionController
             // insert
             //$result = $this->getEnergyDayTable()->save($energyDay);
 
-        	$dateTime->add(new \DateInterval('P1D'));
+            $dateTime->add(new \DateInterval('P1D'));
         }
 
     }*/
