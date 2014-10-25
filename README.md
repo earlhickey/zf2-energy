@@ -1,41 +1,62 @@
-SELECT 
-	strftime('%Y-%m', date) as month, 
-	ROUND(SUM("power_usage_low"), 2) as powerUsageLow,
-	ROUND(SUM("power_usage_hi"), 2) as powerUsageHi,
-	powerUsageLow+powerUsageHi as powerUsage,
-	ROUND(SUM("power_return_low"), 2) as power_return_low,
-	ROUND(SUM("power_return_hi"), 2) as power_return_hi,
-	ROUND(SUM("gas_usage"), 2) as gas_usage 
-FROM "energy_day" GROUP BY month;
+PgEnergy
+============
 
+ZF2 Energy Module
 
-CREATE VIEW "TotalsByMonth" AS SELECT 
-	strftime('%Y-%m', date) as month, 
-	ROUND(SUM("power_usage_low"), 2) as powerUsageLow,
-	ROUND(SUM("power_usage_hi"), 2) as powerUsageHi,
-	ROUND(SUM("power_usage_hi") + SUM("power_usage_low"), 2) as powerUsage,
-	ROUND(SUM("power_return_low"), 2) as powerReturnLow,
-	ROUND(SUM("power_return_hi"), 2) as powerReturnHi,
-	ROUND(SUM("power_return_hi") + SUM("power_return_low"), 2) as powerReturn,
-	ROUND(SUM("gas_usage"), 2) as gasUsage 
-FROM "energy_day" GROUP BY month;
+Installation
+------------
 
+### Main Setup
 
-CREATE VIEW "TotalsByDay" AS SELECT 
-	strftime('%Y-%m-%d', date) as day, 
-	ROUND(SUM("power_usage_hi") + SUM("power_usage_low"), 2) as powerUsage,
-	ROUND(SUM("power_return_hi") + SUM("power_return_low"), 2) as powerReturn,
-	ROUND(SUM("gas_usage"), 2) as gasUsage 
-FROM "energy_day" 
-GROUP BY day
-ORDER BY day DESC;
+#### By cloning project
 
+1. Install the [PgEnergy](https://github.com/earlhickey/PgEnergy) ZF2 module
+   by cloning it into `./vendor/`.
+2. Clone this project into your `./vendor/` directory.
 
-CREATE VIEW "TotalsByHour" AS SELECT 
-	strftime('%Y-%m-%d %H', datetime) as hour, 
-	ROUND(SUM("power_usage_hi") + SUM("power_usage_low"), 2) as powerUsage,
-	ROUND(SUM("power_return_hi") + SUM("power_return_low"), 2) as powerReturn,
-	ROUND(SUM("gas_usage"), 2) as gasUsage 
-FROM "energy" 
-GROUP BY hour
-ORDER BY hour DESC;
+#### With composer
+
+1. Add this project in your composer.json:
+
+    ```json
+    "require": {
+        "earlhickey/zf2-energy": "1.*"
+    }
+    ```
+
+2. Now tell composer to download PgEnergy by running the command:
+
+    ```bash
+    $ php composer.phar update
+    ```
+
+#### Post installation
+
+1. Enabling it in your `application.config.php` file.
+
+    ```php
+    <?php
+    return array(
+        'modules' => array(
+            // ...
+            'PgEnergy',
+        ),
+        // ...
+    );
+    ```
+
+2. Add your database to global.php
+
+    ```php
+    'service_manager' => array(
+        'factories' => array(
+            'Zend\Db\Adapter\Adapter' => function ($sm) {
+                return new Zend\Db\Adapter\Adapter(array(
+                    'driver' => 'Pdo_Sqlite',
+                    'database' => '/path/to/db'
+                ));
+            },
+        ),
+    ),
+    ```
+
