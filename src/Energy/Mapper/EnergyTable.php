@@ -22,10 +22,12 @@ class EnergyTable
 
     public function fetchByDay(\DateTime $dateTime)
     {
-        $resultSet = $this->tableGateway->select(function (Select $select) use ($dateTime) {
-            $select->where->like('datetime', $dateTime->format('Y-m-d') . '%');
-            $select->order('datetime ASC');
-        });
+        $resultSet = $this->tableGateway->select(
+            function (Select $select) use ($dateTime) {
+                $select->where->like('datetime', $dateTime->format('Y-m-d') . '%');
+                $select->order('datetime ASC');
+            }
+        );
         return $resultSet;
     }
 

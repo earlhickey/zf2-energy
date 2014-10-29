@@ -1,5 +1,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script src="/module_energy/highchart401/js/highcharts.js"></script>
+<script src="/module_energy/highchart401/js/highcharts-more.js"></script>
+<script src="/module_energy/highchart401/js/modules/solid-gauge.js"></script>
 <script src="/module_energy/highchart401/js/themes/dark-unica.js"></script>
 <script type="text/javascript">
 <!-- Generic Highcharts Config -->
@@ -12,6 +14,122 @@ $(function() {
             enabled: false
         }
     });
+});
+
+$(function () {
+
+    var gaugeOptions = {
+
+        chart: {
+            type: 'solidgauge'
+        },
+
+        title: null,
+
+        pane: {
+            center: ['50%', '85%'],
+            size: '100%',
+            startAngle: -90,
+            endAngle: 90,
+            background: {
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+                innerRadius: '60%',
+                outerRadius: '100%',
+                shape: 'arc'
+            }
+        },
+
+        tooltip: {
+            enabled: false
+        },
+
+        // the value axis
+        yAxis: {
+            stops: [
+                [0.1, '#55BF3B'], // green
+                [0.5, '#DDDF0D'], // yellow
+                [0.9, '#DF5353'] // red
+            ],
+            lineWidth: 0,
+            minorTickInterval: null,
+            tickPixelInterval: 400,
+            tickWidth: 0,
+            title: {
+                y: -70
+            },
+            labels: {
+                y: 16
+            }
+        },
+
+        plotOptions: {
+            solidgauge: {
+                dataLabels: {
+                    y: 5,
+                    borderWidth: 0,
+                    useHTML: true
+                }
+            }
+        }
+    };
+
+    // The speed gauge
+    $('#container-speed').highcharts(Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 200,
+            title: {
+                text: 'Speed'
+            }
+        },
+
+        credits: {
+            enabled: false
+        },
+
+        series: [{
+            name: 'Speed',
+            data: [80],
+            dataLabels: {
+                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                    ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+                       '<span style="font-size:12px;color:silver">km/h</span></div>'
+            },
+            tooltip: {
+                valueSuffix: ' km/h'
+            }
+        }]
+
+    }));
+
+    // The RPM gauge
+    $('#container-rpm').highcharts(Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 5,
+            title: {
+                text: 'RPM'
+            }
+        },
+
+        series: [{
+            name: 'RPM',
+            data: [1],
+            dataLabels: {
+                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                    ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}</span><br/>' +
+                       '<span style="font-size:12px;color:silver">* 1000 / min</span></div>'
+            },
+            tooltip: {
+                valueSuffix: ' revolutions/min'
+            }
+        }]
+
+    }));
+
+
+
+
 });
 
 $(function () {
@@ -62,7 +180,7 @@ $(function () {
 });
 
 $(function () {
-    $('#daily_power').highcharts({
+    $('#powerByDay').highcharts({
         plotOptions: {
             column: {
                 stacking: 'normal'
@@ -102,17 +220,17 @@ $(function () {
         series: [{
             type: 'column',
             name: 'Power Usage Total',
-            data: [<?php echo $this->powerUsageTotal; ?>],
+            data: [<?php echo $this->powerUsageByDay; ?>],
             color: 'red'
         }, {
             type: 'column',
             name: 'Power Return Total',
-            data: [<?php echo $this->powerReturnTotal; ?>],
+            data: [<?php echo $this->powerReturnByDay; ?>],
             color: 'green'
         }, {
             type: 'spline',
             name: 'Average',
-            data: [<?php echo $this->powerAverage; ?>],
+            data: [<?php echo $this->powerAverageByDay; ?>],
             marker: {
                 lineWidth: 1,
                 lineColor: Highcharts.getOptions().colors[3],
@@ -123,7 +241,7 @@ $(function () {
 });
 
 $(function () {
-    $('#daily_gas').highcharts({
+    $('#gasByDay').highcharts({
         chart: {
             type: 'column'
         },
@@ -158,18 +276,25 @@ $(function () {
         },
         series: [{
             name: 'Gas Usage Total',
-            data: [<?php echo $this->gasTotal; ?>]
+            data: [<?php echo $this->gasByDay; ?>]
         }]
     });
 });
 </script>
+<div class="row">
+    <div class="col-md-3" id="container-speed" style="min-height: 200px;"></div>
+    <div class="col-md-3" id="container-rpm" style="min-height: 200px;"></div>
+    <div class="col-md-3" id="container-rpm"></div>
+    <div class="col-md-3" id="container-rpm"></div>
+</div>
+
 
 <div class="row">
     <div class="col-md-12" id="power" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
 </div>
 <div class="row">
-    <div class="col-md-12" id="daily_power" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
+    <div class="col-md-12" id="powerByDay" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
 </div>
 <div class="row">
-    <div class="col-md-12" id="daily_gas" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
+    <div class="col-md-12" id="gasByDay" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
 </div>

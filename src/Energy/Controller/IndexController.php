@@ -20,7 +20,7 @@ class IndexController extends AbstractActionController
     {
         // get 5 min intervals
         $dateTime = new \DateTime();
-        //$dateTime->setDate(2014, 06, 09);
+        //$dateTime->setDate(2014, 10, 09);
         $records = $this->getEnergyTable()->fetchByDay($dateTime);
 
         //var_dump($dateTime, $records);
@@ -46,10 +46,10 @@ class IndexController extends AbstractActionController
         //var_dump($min, $minDate, $maxDate);
 
         // create arrays
-        $powerUsageTotal = array();
-        $powerReturnTotal = array();
-        $powerAverage = array();
-        $gasTotal = array();
+        $powerUsageByDay = array();
+        $powerReturnByDay = array();
+        $powerAverageByDay = array();
+        $gasByDay = array();
         foreach ($days as $day) {
             // Usage
             $powerUsageCombined = $day->power_usage_low + $day->power_usage_hi;
@@ -58,20 +58,20 @@ class IndexController extends AbstractActionController
             $powerReturnCombined = -1 * ($day->power_return_low + $day->power_return_hi);
 
             // fill array with totals
-            $powerUsageTotal[] = "['" . $day->date . "'," . round($powerUsageCombined, 2) . "]";
-            $powerReturnTotal[] = round($powerReturnCombined, 2);
-            $powerAverage[] = round($powerUsageCombined + $powerReturnCombined, 2);
-            $gasTotal[] = "['" . $day->date . "'," .round($day->gas_usage, 2) . "]";
+            $powerUsageByDay[] = "['" . $day->date . "'," . round($powerUsageCombined, 2) . "]";
+            $powerReturnByDay[] = round($powerReturnCombined, 2);
+            $powerAverageByDay[] = round($powerUsageCombined + $powerReturnCombined, 2);
+            $gasByDay[] = "['" . $day->date . "'," .round($day->gas_usage, 2) . "]";
         }
 
         //echo implode(',', $power);
         return array(
             'powerUsage' => implode(',', $powerUsage),
             'powerReturn' => implode(',', $powerReturn),
-            'powerUsageTotal' => implode(',', $powerUsageTotal),
-            'powerReturnTotal' => implode(',', $powerReturnTotal),
-            'powerAverage' => implode(',', $powerAverage),
-            'gasTotal' => implode(',', $gasTotal),
+            'powerUsageByDay' => implode(',', $powerUsageByDay),
+            'powerReturnByDay' => implode(',', $powerReturnByDay),
+            'powerAverageByDay' => implode(',', $powerAverageByDay),
+            'gasByDay' => implode(',', $gasByDay),
         );
     }
 
@@ -154,10 +154,10 @@ class IndexController extends AbstractActionController
             $energy['date'] = $dateTime->format('Y-m-d');
 
             // totals for debug purpose
-            $powerUsageTotal = round($energy['power_usage_low'] + $energy['power_usage_hi'], 3);
-            $powerReturnTotal = round($energy['power_return_low'] + $energy['power_return_hi'], 3);
+            $powerUsageByDay = round($energy['power_usage_low'] + $energy['power_usage_hi'], 3);
+            $powerReturnByDay = round($energy['power_return_low'] + $energy['power_return_hi'], 3);
 
-            //var_dump($powerUsageTotal, $powerReturnTotal, $energy['gas_usage']);
+            //var_dump($powerUsageByDay, $powerReturnByDay, $energy['gas_usage']);
 
             $energyDay = new EnergyDay();
             $energyDay->exchangeArray($energy);
