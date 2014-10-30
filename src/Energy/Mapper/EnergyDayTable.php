@@ -22,10 +22,40 @@ class EnergyDayTable
 
     public function fetchByDay(\DateTime $minDate, \DateTime $maxDate)
     {
-        $resultSet = $this->tableGateway->select(function (Select $select) use ($minDate, $maxDate) {
-            $select->where->between('date', $minDate->format('Y-m-d'), $maxDate->format('Y-m-d'));
-            $select->order('date ASC');
-        });
+        $resultSet = $this->tableGateway->select(
+            function (Select $select) use ($minDate, $maxDate) {
+                $select->columns(
+                    array(
+                        'day' => new \Zend\Db\Sql\Expression('strftime(\'%Y-%m-%d\', date)'),
+                        'power_usage_total' => new \Zend\Db\Sql\Expression('ROUND(SUM("power_usage_hi") + SUM("power_usage_low"), 2)'),
+                        'power_return_total' => new \Zend\Db\Sql\Expression('ROUND(SUM("power_return_hi") + SUM("power_return_low"), 2)'),
+                        'gas_usage' => new \Zend\Db\Sql\Expression('ROUND(SUM("gas_usage"), 2)'),
+                    )
+                );
+                $select->where->between('date', $minDate->format('Y-m-d'), $maxDate->format('Y-m-d'));
+                $select->group('day');
+                $select->order('day ASC');
+            }
+        );
+        return $resultSet;
+    }
+
+    public function fetchByMonth()
+    {
+        $resultSet = $this->tableGateway->select(
+            function (Select $select) {
+                $select->columns(
+                    array(
+                        'month' => new \Zend\Db\Sql\Expression('strftime(\'%Y-%m\', date)'),
+                        'power_usage_total' => new \Zend\Db\Sql\Expression('ROUND(SUM("power_usage_hi") + SUM("power_usage_low"), 2)'),
+                        'power_return_total' => new \Zend\Db\Sql\Expression('ROUND(SUM("power_return_hi") + SUM("power_return_low"), 2)'),
+                        'gas_usage' => new \Zend\Db\Sql\Expression('ROUND(SUM("gas_usage"), 2)'),
+                    )
+                );
+                $select->group('month');
+            }
+        );
+
         return $resultSet;
     }
 

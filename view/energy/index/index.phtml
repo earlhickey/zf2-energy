@@ -241,6 +241,67 @@ $(function () {
 });
 
 $(function () {
+    $('#powerByMonth').highcharts({
+        plotOptions: {
+            column: {
+                stacking: 'normal'
+            },
+            series: {
+                pointPadding: 0.1,
+                groupPadding: 0,
+                borderWidth: 0,
+                shadow: false
+            },
+        },
+        tooltip: {
+            headerFormat: '<span>{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color}">{series.name}: </td>' +
+            '<td><b>{point.y:.1f} KWh</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        title: {
+            text: 'Monthly energy usage'
+        },
+        subtitle: {
+            text: 'last 12 months'
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Energy (KWh)'
+            }
+        },
+        series: [{
+            type: 'column',
+            name: 'Power Usage Total',
+            data: [<?php echo $this->powerUsageByMonth; ?>],
+            color: 'red'
+        }, {
+            type: 'column',
+            name: 'Power Return Total',
+            data: [<?php echo $this->powerReturnByMonth; ?>],
+            color: 'green'
+        }, {
+            type: 'spline',
+            name: 'Average',
+            data: [<?php echo $this->powerAverageByMonth; ?>],
+            marker: {
+                lineWidth: 1,
+                lineColor: Highcharts.getOptions().colors[3],
+                fillColor: 'white'
+            }
+        }]
+    });
+});
+
+$(function () {
     $('#gasByDay').highcharts({
         chart: {
             type: 'column'
@@ -280,13 +341,54 @@ $(function () {
         }]
     });
 });
+
+$(function () {
+    $('#gasByMonth').highcharts({
+        chart: {
+            type: 'column'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: false
+                }
+            }
+        },
+        title: {
+            text: 'Monthly gas usage'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Gas (m3)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1
+            }]
+        },
+        series: [{
+            name: 'Gas Usage Total',
+            data: [<?php echo $this->gasByMonth; ?>]
+        }]
+    });
+});
 </script>
-<div class="row">
+<!--div class="row">
     <div class="col-md-3" id="container-speed" style="min-height: 200px;"></div>
     <div class="col-md-3" id="container-rpm" style="min-height: 200px;"></div>
     <div class="col-md-3" id="container-rpm"></div>
     <div class="col-md-3" id="container-rpm"></div>
-</div>
+</div -->
 
 
 <div class="row">
@@ -296,5 +398,11 @@ $(function () {
     <div class="col-md-12" id="powerByDay" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
 </div>
 <div class="row">
+    <div class="col-md-12" id="powerByMonth" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
+</div>
+<div class="row">
     <div class="col-md-12" id="gasByDay" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
+</div>
+<div class="row">
+    <div class="col-md-12" id="gasByMonth" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
 </div>
