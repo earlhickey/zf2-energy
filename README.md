@@ -20,7 +20,7 @@ Installation
 
     ```json
     "require": {
-        "earlhickey/zf2-energy": "1.*"
+        "earlhickey/zf2-energy": "~1"
     }
     ```
 

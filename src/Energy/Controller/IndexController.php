@@ -18,22 +18,31 @@ class IndexController extends AbstractActionController
      */
     public function indexAction()
     {
-        // get todays records
+        // today
         $dateTime = new \DateTime();
         //$dateTime->setDate(2014, 10, 09);
         $records = $this->getEnergyTable()->fetchByDay($dateTime);
-
-        //var_dump($dateTime, $records);
-
-        // create arrays
         $powerUsage = array();
         $powerReturn = array();
-        foreach ($records as $record) {
+        $totalRecords = $records->count() - 1;
+        foreach ($records as $key => $record) {
+            if ($key == 0) {
+                $firstPowerUsage = $record->power_usage_low + $record->power_usage_hi;
+                $firstPowerReturn = $record->power_return_low + $record->power_return_hi;
+            }
+            if ($key == $totalRecords) {
+                $lastPowerUsage = $record->power_usage_low + $record->power_usage_hi;
+                $lastPowerReturn = $record->power_return_low + $record->power_return_hi;
+            }
             $powerUsage[] = $record->current_power_usage;
             $powerReturn[] = $record->current_power_return;
         }
 
-        // get daily indervals
+        // induvidual values
+        //reset($records);
+        //$firstPowerUsage = $records[0];
+
+        // by day
         $min = new \DateInterval('P30D');
         $min->invert = 1; //Make it negative.
         $max = new \DateInterval('P1D');
@@ -42,8 +51,6 @@ class IndexController extends AbstractActionController
         $minDate->add($min);
         $maxDate = new \DateTime();
         $maxDate->add($max);
-
-        // by day
         $days = $this->getEnergyDayTable()->fetchByDay($minDate, $maxDate);
         foreach ($days as $day) {
             $powerUsageByDay[] = "['" . $day->date . "'," . $day->power_usage_total . "]";
@@ -61,8 +68,14 @@ class IndexController extends AbstractActionController
             $gasByMonth[] = "['" . $month->date . "'," . $month->gas_usage . "]";
         }
 
-        //echo implode(',', $power);
         return array(
+            'currentUsage' => end($powerUsage),
+            'todayMaxUsage' => (count($powerUsage)) ? max($powerUsage) : 100,
+            'currentReturn' => end($powerReturn),
+            'todayMaxReturn' => (count($powerReturn)) ? max($powerReturn) : 100,
+            'todayUsage' => round($lastPowerUsage - $firstPowerUsage, 2),
+            'todayReturn' => round($lastPowerReturn - $firstPowerReturn, 2),
+
             'powerUsage' => implode(',', $powerUsage),
             'powerReturn' => implode(',', $powerReturn),
 

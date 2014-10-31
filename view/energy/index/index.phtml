@@ -77,9 +77,9 @@ $(function () {
     $('#container-speed').highcharts(Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: 0,
-            max: 200,
+            max: <?php echo $this->todayMaxUsage; ?>,
             title: {
-                text: 'Speed'
+                text: 'Current Usage'
             }
         },
 
@@ -88,15 +88,15 @@ $(function () {
         },
 
         series: [{
-            name: 'Speed',
-            data: [80],
+            name: 'Current Usage',
+            data: [<?php echo $this->currentUsage; ?>],
             dataLabels: {
                 format: '<div style="text-align:center"><span style="font-size:25px;color:' +
                     ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
-                       '<span style="font-size:12px;color:silver">km/h</span></div>'
+                       '<span style="font-size:12px;color:silver">kW</span></div>'
             },
             tooltip: {
-                valueSuffix: ' km/h'
+                valueSuffix: ' kW'
             }
         }]
 
@@ -106,19 +106,19 @@ $(function () {
     $('#container-rpm').highcharts(Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: 0,
-            max: 5,
+            max: <?php echo $this->todayMaxReturn; ?>,
             title: {
-                text: 'RPM'
+                text: 'Current Return'
             }
         },
 
         series: [{
-            name: 'RPM',
-            data: [1],
+            name: 'current Return',
+            data: [<?php echo $this->currentReturn; ?>],
             dataLabels: {
                 format: '<div style="text-align:center"><span style="font-size:25px;color:' +
                     ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}</span><br/>' +
-                       '<span style="font-size:12px;color:silver">* 1000 / min</span></div>'
+                       '<span style="font-size:12px;color:silver">kW</span></div>'
             },
             tooltip: {
                 valueSuffix: ' revolutions/min'
@@ -383,13 +383,27 @@ $(function () {
     });
 });
 </script>
-<!--div class="row">
+<!-- div class="row">
     <div class="col-md-3" id="container-speed" style="min-height: 200px;"></div>
     <div class="col-md-3" id="container-rpm" style="min-height: 200px;"></div>
     <div class="col-md-3" id="container-rpm"></div>
     <div class="col-md-3" id="container-rpm"></div>
 </div -->
 
+<div class="row">
+    <div class="col-md-3"><div class="well well-lg">
+        <p>Current Usage: <?php echo $this->currentUsage; ?> W</p>
+    </div></div>
+    <div class="col-md-3"><div class="well well-lg">
+        <p>Current Return: <?php echo $this->currentReturn; ?> W</p>
+    </div></div>
+    <div class="col-md-3"><div class="well well-lg">
+        <p>Today Usage: <?php echo $this->todayUsage; ?> kWh</p>
+    </div></div>
+    <div class="col-md-3"><div class="well well-lg">
+        <p>Today Return: <?php echo $this->todayReturn; ?> kWh</p>
+    </div></div>
+</div>
 
 <div class="row">
     <div class="col-md-12" id="power" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
