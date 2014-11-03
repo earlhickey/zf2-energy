@@ -29,10 +29,12 @@ class IndexController extends AbstractActionController
             if ($key == 0) {
                 $firstPowerUsage = $record->power_usage_low + $record->power_usage_hi;
                 $firstPowerReturn = $record->power_return_low + $record->power_return_hi;
+                $firstGas = $record->gas_usage;
             }
             if ($key == $totalRecords) {
                 $lastPowerUsage = $record->power_usage_low + $record->power_usage_hi;
                 $lastPowerReturn = $record->power_return_low + $record->power_return_hi;
+                $lastGas = $record->gas_usage;
             }
             $powerUsage[] = $record->current_power_usage;
             $powerReturn[] = $record->current_power_return;
@@ -75,6 +77,7 @@ class IndexController extends AbstractActionController
             'todayMaxReturn' => (count($powerReturn)) ? max($powerReturn) : 100,
             'todayUsage' => round($lastPowerUsage - $firstPowerUsage, 2),
             'todayReturn' => round($lastPowerReturn - $firstPowerReturn, 2),
+            'todayGas' => round($lastGas - $firstGas, 2),
 
             'powerUsage' => implode(',', $powerUsage),
             'powerReturn' => implode(',', $powerReturn),

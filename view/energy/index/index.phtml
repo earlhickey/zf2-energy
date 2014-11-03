@@ -391,18 +391,25 @@ $(function () {
 </div -->
 
 <div class="row">
-    <div class="col-md-3"><div class="well well-lg">
-        <p>Current Usage: <?php echo $this->currentUsage; ?> W</p>
-    </div></div>
-    <div class="col-md-3"><div class="well well-lg">
-        <p>Current Return: <?php echo $this->currentReturn; ?> W</p>
-    </div></div>
-    <div class="col-md-3"><div class="well well-lg">
-        <p>Today Usage: <?php echo $this->todayUsage; ?> kWh</p>
-    </div></div>
-    <div class="col-md-3"><div class="well well-lg">
-        <p>Today Return: <?php echo $this->todayReturn; ?> kWh</p>
-    </div></div>
+    <div class="col-md-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">Current</div>
+            <div class="panel-body">
+                <p>Usage: <?php echo $this->currentUsage; ?> W</p>
+                <p>Return: <?php echo $this->currentReturn; ?> W</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">Today</div>
+            <div class="panel-body">
+                <p>Usage: <?php echo $this->todayUsage; ?> kWh</p>
+                <p>Return: <?php echo $this->todayReturn; ?> kWh</p>
+                <p>Gas: <?php echo $this->todayGas; ?> M3</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
