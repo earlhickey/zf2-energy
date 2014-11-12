@@ -17,122 +17,6 @@ $(function() {
 });
 
 $(function () {
-
-    var gaugeOptions = {
-
-        chart: {
-            type: 'solidgauge'
-        },
-
-        title: null,
-
-        pane: {
-            center: ['50%', '85%'],
-            size: '100%',
-            startAngle: -90,
-            endAngle: 90,
-            background: {
-                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
-                innerRadius: '60%',
-                outerRadius: '100%',
-                shape: 'arc'
-            }
-        },
-
-        tooltip: {
-            enabled: false
-        },
-
-        // the value axis
-        yAxis: {
-            stops: [
-                [0.1, '#55BF3B'], // green
-                [0.5, '#DDDF0D'], // yellow
-                [0.9, '#DF5353'] // red
-            ],
-            lineWidth: 0,
-            minorTickInterval: null,
-            tickPixelInterval: 400,
-            tickWidth: 0,
-            title: {
-                y: -70
-            },
-            labels: {
-                y: 16
-            }
-        },
-
-        plotOptions: {
-            solidgauge: {
-                dataLabels: {
-                    y: 5,
-                    borderWidth: 0,
-                    useHTML: true
-                }
-            }
-        }
-    };
-
-    // The speed gauge
-    $('#container-speed').highcharts(Highcharts.merge(gaugeOptions, {
-        yAxis: {
-            min: 0,
-            max: <?php echo $this->todayMaxUsage; ?>,
-            title: {
-                text: 'Current Usage'
-            }
-        },
-
-        credits: {
-            enabled: false
-        },
-
-        series: [{
-            name: 'Current Usage',
-            data: [<?php echo $this->currentUsage; ?>],
-            dataLabels: {
-                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
-                    ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
-                       '<span style="font-size:12px;color:silver">kW</span></div>'
-            },
-            tooltip: {
-                valueSuffix: ' kW'
-            }
-        }]
-
-    }));
-
-    // The RPM gauge
-    $('#container-rpm').highcharts(Highcharts.merge(gaugeOptions, {
-        yAxis: {
-            min: 0,
-            max: <?php echo $this->todayMaxReturn; ?>,
-            title: {
-                text: 'Current Return'
-            }
-        },
-
-        series: [{
-            name: 'current Return',
-            data: [<?php echo $this->currentReturn; ?>],
-            dataLabels: {
-                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
-                    ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}</span><br/>' +
-                       '<span style="font-size:12px;color:silver">kW</span></div>'
-            },
-            tooltip: {
-                valueSuffix: ' revolutions/min'
-            }
-        }]
-
-    }));
-
-
-
-
-});
-
-$(function () {
     $('#power').highcharts({
         chart: {
             type: 'line'
@@ -150,7 +34,7 @@ $(function () {
             text: 'Daily energy usage'
         },
         subtitle: {
-            text: 'pG stats'
+            text: 'Current Usage: <?php echo $this->currentUsage; ?> W | Current Return: <?php echo $this->currentReturn; ?> W (<?php echo $this->lastUpdate; ?>)'
         },
         xAxis: {
             categories: ['0','1','2','3','23'],
@@ -383,34 +267,6 @@ $(function () {
     });
 });
 </script>
-<!-- div class="row">
-    <div class="col-md-3" id="container-speed" style="min-height: 200px;"></div>
-    <div class="col-md-3" id="container-rpm" style="min-height: 200px;"></div>
-    <div class="col-md-3" id="container-rpm"></div>
-    <div class="col-md-3" id="container-rpm"></div>
-</div -->
-
-<div class="row">
-    <div class="col-md-3">
-        <div class="panel panel-success">
-            <div class="panel-heading">Current</div>
-            <div class="panel-body">
-                <p>Usage: <?php echo $this->currentUsage; ?> W</p>
-                <p>Return: <?php echo $this->currentReturn; ?> W</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="panel panel-success">
-            <div class="panel-heading">Today</div>
-            <div class="panel-body">
-                <p>Usage: <?php echo $this->todayUsage; ?> kWh</p>
-                <p>Return: <?php echo $this->todayReturn; ?> kWh</p>
-                <p>Gas: <?php echo $this->todayGas; ?> M3</p>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="row">
     <div class="col-md-12" id="power" style="min-width: 310px; height: 400px; margin-top: 20px"></div>
