@@ -64,14 +64,14 @@ class IndexController extends AbstractActionController
         foreach ($days as $day) {
             $powerUsageByDay[] = "['" . $day->date . "'," . $day->power_usage_total . "]";
             $powerReturnByDay[] = -1 * $day->power_return_total;
-            $powerAverageByDay[] = $day->power_usage_total + (-1 * $day->power_return_total);
+            $powerAverageByDay[] = $day->power_usage_total - $day->power_return_total;
             $gasByDay[] = "['" . $day->date . "'," . $day->gas_usage . "]";
         }
 
         // add today to byDay
         $powerUsageByDay[] = "['" . date("Y-m-d") . "'," . round($lastPowerUsage - $firstPowerUsage, 2) . "]";
         $powerReturnByDay[] = -1 * round($lastPowerReturn - $firstPowerReturn, 2);
-        $powerAverageByDay[] = round(($lastPowerUsage - $firstPowerUsage) + (-1 * -1 * ($lastPowerReturn - $firstPowerReturn)), 2);
+        $powerAverageByDay[] = round(($lastPowerUsage - $firstPowerUsage) - ($lastPowerReturn - $firstPowerReturn), 2);
         $gasByDay[] = "['" . date("Y-m-d") . "'," . round($lastGas - $firstGas, 2) . "]";
 
         // by month
@@ -79,7 +79,7 @@ class IndexController extends AbstractActionController
         foreach ($months as $month) {
             $powerUsageByMonth[] = "['" . $month->date . "'," . $month->power_usage_total . "]";
             $powerReturnByMonth[] = -1 * $month->power_return_total;
-            $powerAverageByMonth[] = $month->power_usage_total + (-1 * $month->power_return_total);
+            $powerAverageByMonth[] = $month->power_usage_total - $month->power_return_total;
             $gasByMonth[] = "['" . $month->date . "'," . $month->gas_usage . "]";
         }
 
