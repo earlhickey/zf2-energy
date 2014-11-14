@@ -19,7 +19,7 @@ $(function() {
 $(function () {
     $('#power').highcharts({
         chart: {
-            type: 'line'
+            zoomType: 'x'
         },
         plotOptions: {
             series: {
@@ -27,7 +27,9 @@ $(function () {
                 lineWidth: 1,
                 marker: {
                     enabled: false
-                }
+                },
+                pointInterval: 180 * 1000,
+                pointRange: 180 * 1000,
             }
         },
         title: {
@@ -37,21 +39,17 @@ $(function () {
             text: ''
         },
         xAxis: {
-            categories: ['0','1','2','3','23'],
-            tickInterval: 12,
-            labels: {
-                enabled: true
+            type: 'datetime',
+            dateTimeLabelFormats: {
+                hour: '%H:%M',
+                day: '%H:%M',
             }
         },
         yAxis: {
             title: {
                 text: 'Energy (Watt)'
             },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
+            floor: 0,
         },
         series: [{
             name: 'Power Usage',
