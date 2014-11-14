@@ -31,10 +31,10 @@ $(function () {
             }
         },
         title: {
-            text: 'Daily energy usage'
+            text: 'Today Usage: <?php echo $this->currentUsage; ?> W | Return: <?php echo $this->currentReturn; ?> W on <?php echo $this->lastUpdate; ?>'
         },
         subtitle: {
-            text: 'Current Usage: <?php echo $this->currentUsage; ?> W | Current Return: <?php echo $this->currentReturn; ?> W (<?php echo $this->lastUpdate; ?>)'
+            text: ''
         },
         xAxis: {
             categories: ['0','1','2','3','23'],
@@ -88,7 +88,7 @@ $(function () {
             text: 'Daily energy usage'
         },
         subtitle: {
-            text: 'last 30 days'
+            text: ''
         },
         xAxis: {
             type: 'category',
@@ -149,7 +149,7 @@ $(function () {
             text: 'Monthly energy usage'
         },
         subtitle: {
-            text: 'last 12 months'
+            text: ''
         },
         xAxis: {
             type: 'category',
@@ -202,7 +202,7 @@ $(function () {
             text: 'Daily gas usage'
         },
         subtitle: {
-            text: 'last 30 days'
+            text: ''
         },
         xAxis: {
             type: 'category',

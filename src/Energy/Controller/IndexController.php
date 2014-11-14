@@ -51,7 +51,7 @@ class IndexController extends AbstractActionController
         }
 
         // by day
-        $min = new \DateInterval('P60D');
+        $min = new \DateInterval('P30D');
         $min->invert = 1; //Make it negative.
         $max = new \DateInterval('P1D');
         $max->invert = 1; //Make it negative.
