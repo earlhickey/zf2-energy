@@ -11,8 +11,8 @@ Installation
 #### By cloning project
 
 1. Install the [PgEnergy](https://github.com/earlhickey/PgEnergy) ZF2 module
-   by cloning it into `./vendor/`.
-2. Clone this project into your `./vendor/` directory.
+   by cloning it into `./vendor/`
+2. Clone this project into your `./vendor/` directory
 
 #### With composer
 
@@ -32,7 +32,7 @@ Installation
 
 #### Post installation
 
-1. Enabling it in your `application.config.php` file.
+1. Enabling it in your `application.config.php` file
 
     ```php
     <?php
@@ -60,3 +60,12 @@ Installation
     ),
     ```
 
+3. Install cronjobs for storing energy usage
+
+    ```bash
+    $ crontab -e
+    # Save current energie usage every 3 minutes
+    1-59/3 * * * * /usr/bin/python /path/to/zf-energy/docs/read-p1-munin.py >> /dev/null 2>&1
+    # Save daily usage at 1:55
+    55 1 * * * /path/to/zf-energy/docs/day.py >> /dev/null 2>&1
+    ```
