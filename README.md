@@ -65,7 +65,7 @@ Installation
     ```bash
     $ crontab -e
     # Save current energie usage every 3 minutes
-    1-59/3 * * * * /usr/bin/python /path/to/zf-energy/docs/read-p1-munin.py >> /dev/null 2>&1
+    1-59/3 * * * * /usr/bin/python /path/to/zf-energy/docs/read-p1.py >> /dev/null 2>&1
     # Save daily usage at 1:55
-    55 1 * * * /path/to/zf-energy/docs/day.py >> /dev/null 2>&1
+    55 1 * * * /usr/bin/python /path/to/zf-energy/docs/day.py >> /dev/null 2>&1
     ```
