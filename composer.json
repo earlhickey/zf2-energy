@@ -13,7 +13,7 @@
   "keywords" : [ "zf2" ],
   "autoload" : {
     "psr-0" : {
-      "Selligent" : "src/"
+      "Energy" : "src/"
     },
     "classmap" : [ "./Module.php" ]
   },

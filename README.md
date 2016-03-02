@@ -39,7 +39,7 @@ Installation
     return array(
         'modules' => array(
             // ...
-            'PgEnergy',
+            'Energy',
         ),
         // ...
     );
