@@ -34,6 +34,7 @@ except:
 response = False
 # start list for data collection
 dataList = [None]*7
+db="/var/db/db-name"
 
 # define regex for testing data
 kwh = re.compile("0\d{4}\.\d{3}\*kWh")
@@ -41,7 +42,7 @@ kw = re.compile("000\d{1}\.\d{2}\*kW")
 m3 = re.compile("0\d{4}\.\d{1,3}")
 
 # get last record
-conn = sqlite3.connect('/var/db/pg')
+conn = sqlite3.connect(db)
 c = conn.cursor()
 c.execute('SELECT "power_usage_low","power_usage_hi","power_return_low","power_return_hi","gas_usage" FROM "energy" ORDER BY id DESC LIMIT 1;')
 lastRecord = c.fetchone()
@@ -113,7 +114,7 @@ dt = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 dataList.append(dt)
 
 if None not in dataList :
-  conn = sqlite3.connect('/var/db/pg')
+  conn = sqlite3.connect(db)
   c = conn.cursor()
   q = '''INSERT INTO "energy" ("power_usage_low","power_usage_hi","power_return_low","power_return_hi","current_power_usage","current_power_return","gas_usage","datetime") VALUES (?,?,?,?,?,?,?,?)'''
   c.execute(q, (dataList))
